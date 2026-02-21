@@ -322,7 +322,7 @@ const sites = [
 {name:"Toptal",url:"https://toptal.com",category:"Work",score:77},
 {name:"PeoplePerHour",url:"https://peopleperhour.com",category:"Work",score:76},
 {name:"Freelancer",url:"https://freelancer.com",category:"Work",score:76},
-{name:"Behance Jobs",url:"https://behance.net/joblist",category:"Work",score:75,
+{name:"Behance Jobs",url:"https://behance.net/joblist",category:"Work",score:75,}
 {name:"Raycast",url:"https://raycast.com",category:"Tools",score:82},
 {name:"Alfred",url:"https://alfredapp.com",category:"Tools",score:81},
 {name:"Warp Terminal",url:"https://warp.dev",category:"Dev",score:81},
@@ -420,7 +420,7 @@ const sites = [
 {name:"JSON Formatter",url:"https://jsonformatter.org",category:"Tools",score:75},
 {name:"RapidTables",url:"https://rapidtables.com",category:"Tools",score:75},
 {name:"Convertio",url:"https://convertio.co",category:"Tools",score:74},
-{name:"TinyWOW",url:"https://tinywow.com",category:"Tools",score:74,
+{name:"TinyWOW",url:"https://tinywow.com",category:"Tools",score:74},
 {name:"Allegro",url:"https://allegro.pl",category:"Polish Store",score:100},
 {name:"OLX Polska",url:"https://olx.pl",category:"Polish Store",score:97},
 {name:"Ceneo",url:"https://ceneo.pl",category:"Polish Store",score:96},
