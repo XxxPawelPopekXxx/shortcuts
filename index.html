@@ -3,389 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Nick's Shortcut's Hub</title>
+<title>Nick's Shortcut's</title>
 
 <style>
-/* =====================================================
-   ROOT VARIABLES
-===================================================== */
 :root{
-  --bg:#f5f7fb;
-  --card:#ffffff;
-  --text:#111;
-  --muted:#666;
-  --accent:#4f46e5;
-  --shadow:0 8px 25px rgba(0,0,0,.08);
+ --bg:#f5f7fc;
+ --card:#ffffffd8;
+ --text:#111;
+ --muted:#666;
+ --accent:#4f46e5;
 }
-
 body.dark{
-  --bg:#0f1117;
-  --card:#1a1d26;
-  --text:#fff;
-  --muted:#bbb;
-  --accent:#7c7cff;
-  --shadow:0 8px 25px rgba(0,0,0,.45);
+ --bg:#0b0f18;
+ --card:#151a22dd;
+ --text:#fff;
+ --muted:#aaa;
+ --accent:#7c7cff;
 }
 
-/* =====================================================
-   BASE
-===================================================== */
 *{margin:0;padding:0;box-sizing:border-box}
 body{
-  font-family:system-ui,-apple-system,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-  transition:.35s;
-  overflow-x:hidden;
+ background:var(--bg);
+ color:var(--text);
+ font-family:system-ui;
+ transition:.3s;
+ overflow-x:hidden;
 }
-a{text-decoration:none;color:inherit}
 
-/* =====================================================
-   HEADER
-===================================================== */
+/* ===== Animated gradient ===== */
+body::before{
+ content:"";
+ position:fixed;
+ inset:-30%;
+ background:
+ radial-gradient(circle at 20% 20%,#5b8cff66,transparent 50%),
+ radial-gradient(circle at 80% 70%,#7c4dff66,transparent 50%);
+ filter:blur(80px);
+ z-index:-1;
+ animation:move 15s infinite alternate ease-in-out;
+}
+@keyframes move{
+ from{transform:translate(0,0)}
+ to{transform:translate(60px,-60px)}
+}
+
+/* ===== Toolbar ===== */
 header{
-  position:sticky;
-  top:0;
-  backdrop-filter:blur(12px);
-  background:rgba(255,255,255,.7);
-  border-bottom:1px solid rgba(0,0,0,.08);
-  padding:15px 30px;
-  z-index:999;
+ position:sticky;
+ top:0;
+ z-index:999;
+ display:flex;
+ gap:10px;
+ padding:14px;
+ backdrop-filter:blur(12px);
+ background:rgba(255,255,255,.6);
 }
-body.dark header{
-  background:rgba(15,17,23,.7);
-}
-
-.topbar{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:15px;
-}
-
-h1{
-  font-size:1.4rem;
-  font-weight:700;
-}
-
-.controls{
-  display:flex;
-  gap:10px;
-}
+body.dark header{background:rgba(10,12,18,.6)}
 
 input,select,button{
-  border:none;
-  background:var(--card);
-  color:var(--text);
-  padding:10px 14px;
-  border-radius:12px;
-  box-shadow:var(--shadow);
+ border:none;
+ padding:10px 14px;
+ border-radius:12px;
+ background:var(--card);
+ color:var(--text);
 }
+input{flex:1}
+button{cursor:pointer}
 
-button{
-  cursor:pointer;
-  transition:.2s;
-}
-button:hover{
-  transform:translateY(-2px);
-}
-
-/* =====================================================
-   GRID
-===================================================== */
-main{
-  max-width:1400px;
-  margin:auto;
-  padding:30px;
-}
-
+/* ===== Grid ===== */
 .grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-  gap:18px;
+ max-width:1600px;
+ margin:auto;
+ padding:20px;
+ display:grid;
+ grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+ gap:16px;
 }
 
 .card{
-  background:var(--card);
-  border-radius:18px;
-  padding:18px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  box-shadow:var(--shadow);
-  transition:.3s;
-  opacity:0;
-  transform:translateY(30px);
+ background:var(--card);
+ border-radius:16px;
+ padding:14px;
+ display:flex;
+ gap:10px;
+ align-items:center;
+ transition:.22s;
+ transform:translateY(20px);
+ opacity:0;
+ will-change:transform;
 }
-
-.card.show{
-  opacity:1;
-  transform:translateY(0);
-}
+.card.show{opacity:1;transform:translateY(0)}
 
 .card:hover{
-  transform:translateY(-6px) scale(1.02);
+ transform:scale(1.08);
+ z-index:4;
 }
 
-.card img{
-  width:24px;
-  height:24px;
-}
+.icon{width:24px;height:24px}
+.name{font-weight:700}
+.cat{font-size:12px;color:var(--muted)}
 
-.card h3{
-  font-size:15px;
-  font-weight:600;
+.star{
+ margin-left:auto;
+ cursor:pointer;
+ font-size:18px;
 }
+.star.active{color:gold}
 
-.tag{
-  font-size:12px;
-  color:var(--muted);
+/* ===== Command palette ===== */
+#cmd{
+ position:fixed;
+ top:20%;
+ left:50%;
+ transform:translateX(-50%);
+ width:600px;
+ max-width:90%;
+ background:var(--card);
+ border-radius:14px;
+ padding:12px;
+ display:none;
+ box-shadow:0 15px 40px rgba(0,0,0,.3);
+ z-index:2000;
 }
-
-/* =====================================================
-   FOOTER
-===================================================== */
-footer{
-  text-align:center;
-  padding:50px 20px;
-  color:var(--muted);
-}
-
-/* =====================================================
-   SCROLL ANIMATION
-===================================================== */
-@keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* =====================================================
-   RESPONSIVE
-===================================================== */
-@media(max-width:700px){
-  header{padding:15px}
-  main{padding:15px}
-}
+#cmd input{width:100%}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="topbar">
-    <h1>⚡ Nick's Shortcut's Hub</h1>
-    <div class="controls">
-      <input id="search" placeholder="Search website...">
-      <select id="category">
-        <option value="all">All</option>
-      </select>
-      <button id="themeBtn">🌙</button>
-    </div>
-  </div>
+ <input id="search" placeholder="Search ( / )">
+ <select id="category"><option value="all">All</option></select>
+ <button id="theme">🌙</button>
 </header>
 
-<main>
-  <div class="grid" id="grid"></div>
-</main>
+<div class="grid" id="grid"></div>
 
-<footer>
-  • 100 Useful Websites
-</footer>
+<div id="cmd">
+ <input id="cmdInput" placeholder="Command palette...">
+</div>
 
+<script src="sites.js"></script>
 <script>
-/* =====================================================
-   DATA (100 WEBSITES)
-===================================================== */
-const sites=[
-["Google","https://google.com","Search"],
-["Bing","https://bing.com","Search"],
-["DuckDuckGo","https://duckduckgo.com","Search"],
-["Yahoo","https://yahoo.com","Search"],
-["YouTube","https://youtube.com","Media"],
-["Netflix","https://netflix.com","Media"],
-["Spotify","https://spotify.com","Media"],
-["Twitch","https://twitch.tv","Media"],
-["Reddit","https://reddit.com","Social"],
-["Twitter/X","https://x.com","Social"],
-["Instagram","https://instagram.com","Social"],
-["Facebook","https://facebook.com","Social"],
-["LinkedIn","https://linkedin.com","Social"],
-["TikTok","https://tiktok.com","Social"],
-["WhatsApp Web","https://web.whatsapp.com","Social"],
-["Telegram","https://web.telegram.org","Social"],
-["GitHub","https://github.com","Dev"],
-["GitLab","https://gitlab.com","Dev"],
-["Stack Overflow","https://stackoverflow.com","Dev"],
-["MDN Docs","https://developer.mozilla.org","Dev"],
-["CodePen","https://codepen.io","Dev"],
-["Replit","https://replit.com","Dev"],
-["Vercel","https://vercel.com","Dev"],
-["Netlify","https://netlify.com","Dev"],
-["DigitalOcean","https://digitalocean.com","Dev"],
-["AWS","https://aws.amazon.com","Cloud"],
-["Google Cloud","https://cloud.google.com","Cloud"],
-["Azure","https://azure.microsoft.com","Cloud"],
-["ChatGPT","https://chat.openai.com","AI"],
-["Claude","https://claude.ai","AI"],
-["Perplexity","https://perplexity.ai","AI"],
-["Gemini","https://gemini.google.com","AI"],
-["HuggingFace","https://huggingface.co","AI"],
-["Canva","https://canva.com","Design"],
-["Figma","https://figma.com","Design"],
-["Dribbble","https://dribbble.com","Design"],
-["Behance","https://behance.net","Design"],
-["Pixabay","https://pixabay.com","Design"],
-["Unsplash","https://unsplash.com","Design"],
-["Amazon","https://amazon.com","Shopping"],
-["eBay","https://ebay.com","Shopping"],
-["AliExpress","https://aliexpress.com","Shopping"],
-["Etsy","https://etsy.com","Shopping"],
-["BestBuy","https://bestbuy.com","Shopping"],
-["Walmart","https://walmart.com","Shopping"],
-["Udemy","https://udemy.com","Learning"],
-["Coursera","https://coursera.org","Learning"],
-["edX","https://edx.org","Learning"],
-["Khan Academy","https://khanacademy.org","Learning"],
-["MIT OpenCourseWare","https://ocw.mit.edu","Learning"],
-["Wikipedia","https://wikipedia.org","Learning"],
-["BBC","https://bbc.com","News"],
-["CNN","https://cnn.com","News"],
-["Reuters","https://reuters.com","News"],
-["Bloomberg","https://bloomberg.com","News"],
-["NYTimes","https://nytimes.com","News"],
-["Weather","https://weather.com","Tools"],
-["Speedtest","https://speedtest.net","Tools"],
-["TinyURL","https://tinyurl.com","Tools"],
-["Pastebin","https://pastebin.com","Tools"],
-["Notion","https://notion.so","Productivity"],
-["Trello","https://trello.com","Productivity"],
-["Slack","https://slack.com","Productivity"],
-["Zoom","https://zoom.us","Productivity"],
-["Google Drive","https://drive.google.com","Cloud"],
-["Dropbox","https://dropbox.com","Cloud"],
-["OneDrive","https://onedrive.live.com","Cloud"],
-["PayPal","https://paypal.com","Finance"],
-["Wise","https://wise.com","Finance"],
-["CoinMarketCap","https://coinmarketcap.com","Finance"],
-["TradingView","https://tradingview.com","Finance"],
-["IMDB","https://imdb.com","Media"],
-["RottenTomatoes","https://rottentomatoes.com","Media"],
-["SoundCloud","https://soundcloud.com","Media"],
-["Vimeo","https://vimeo.com","Media"],
-["Discord","https://discord.com","Social"],
-["Pinterest","https://pinterest.com","Social"],
-["Quora","https://quora.com","Learning"],
-["Medium","https://medium.com","Learning"],
-["Dev.to","https://dev.to","Dev"],
-["Linux","https://linux.org","Dev"],
-["Kali Linux","https://kali.org","Dev"],
-["Docker","https://docker.com","Dev"],
-["Postman","https://postman.com","Dev"],
-["Hashnode","https://hashnode.com","Dev"],
-["ProductHunt","https://producthunt.com","AI"],
-["HackerNews","https://news.ycombinator.com","News"],
-["Arxiv","https://arxiv.org","Learning"],
-["Overleaf","https://overleaf.com","Learning"],
-["Google Maps","https://maps.google.com","Tools"],
-["Translate","https://translate.google.com","Tools"],
-["Calendar","https://calendar.google.com","Productivity"],
-["Gmail","https://mail.google.com","Productivity"],
-["Outlook","https://outlook.live.com","Productivity"],
-["Duck AI","https://duck.ai","AI"],
-["OpenWeather","https://openweathermap.org","Tools"],
-["Archive.org","https://archive.org","Learning"],
-["Fiverr","https://fiverr.com","Work"],
-["Upwork","https://upwork.com","Work"]
-];
 
-/* =====================================================
-   BUILD CATEGORY OPTIONS
-===================================================== */
-const categorySelect=document.getElementById("category");
-[...new Set(sites.map(s=>s[2]))].sort().forEach(c=>{
-  const opt=document.createElement("option");
-  opt.value=c;
-  opt.textContent=c;
-  categorySelect.appendChild(opt);
-});
-
-/* =====================================================
-   RENDER
-===================================================== */
 const grid=document.getElementById("grid");
+const search=document.getElementById("search");
+const cat=document.getElementById("category");
+
+let fav=JSON.parse(localStorage.getItem("fav")||"[]");
+let usage=JSON.parse(localStorage.getItem("usage")||"{}");
 
 function favicon(url){
-  return "https://www.google.com/s2/favicons?domain="+url+"&sz=64";
+ return "https://www.google.com/s2/favicons?domain="+url+"&sz=64";
+}
+
+/* categories */
+[...new Set(sites.map(s=>s.category))]
+.sort().forEach(c=>{
+ let o=document.createElement("option");
+ o.value=c;o.textContent=c;
+ cat.appendChild(o);
+});
+
+function fuzzy(text,q){
+ return text.toLowerCase().includes(q.toLowerCase());
+}
+
+function sortRank(a,b){
+ const ua=usage[a.name]||0;
+ const ub=usage[b.name]||0;
+ return (b.score+ub*5)-(a.score+ua*5);
 }
 
 function render(){
-  grid.innerHTML="";
-  const search=document.getElementById("search").value.toLowerCase();
-  const cat=categorySelect.value;
+ grid.innerHTML="";
+ let q=search.value;
+ let c=cat.value;
 
-  sites.forEach((s,i)=>{
-    if(search && !s[0].toLowerCase().includes(search)) return;
-    if(cat!=="all" && s[2]!==cat) return;
+ let list=[...sites].sort(sortRank);
 
-    const a=document.createElement("a");
-    a.href=s[1];
-    a.target="_blank";
+ list.forEach(s=>{
+  if(q && !fuzzy(s.name,q)) return;
+  if(c!=="all" && s.category!==c) return;
 
-    a.innerHTML=`
-      <div class="card">
-        <img src="${favicon(s[1])}">
-        <div>
-          <h3>${s[0]}</h3>
-          <div class="tag">${s[2]}</div>
-        </div>
-      </div>
-    `;
+  const isFav=fav.includes(s.name);
 
-    grid.appendChild(a);
+  const el=document.createElement("a");
+  el.href=s.url;
+  el.target="_blank";
+
+  el.onclick=()=>{
+   usage[s.name]=(usage[s.name]||0)+1;
+   localStorage.setItem("usage",JSON.stringify(usage));
+  };
+
+  el.innerHTML=`
+   <div class="card">
+    <img class="icon" src="${favicon(s.url)}">
+    <div>
+      <div class="name">${s.name}</div>
+      <div class="cat">${s.category}</div>
+    </div>
+    <div class="star ${isFav?'active':''}" data="${s.name}">★</div>
+   </div>
+  `;
+  grid.appendChild(el);
+ });
+
+ reveal();
+ bindStars();
+ dockEffect();
+}
+
+function bindStars(){
+ document.querySelectorAll(".star").forEach(st=>{
+  st.onclick=(e)=>{
+   e.preventDefault();e.stopPropagation();
+   let n=st.getAttribute("data");
+   let i=fav.indexOf(n);
+   if(i>-1) fav.splice(i,1);
+   else fav.push(n);
+   localStorage.setItem("fav",JSON.stringify(fav));
+   render();
+  };
+ });
+}
+
+/* Dock magnify */
+function dockEffect(){
+ const cards=document.querySelectorAll(".card");
+ cards.forEach(card=>{
+  card.onmousemove=e=>{
+   const r=card.getBoundingClientRect();
+   const x=(e.clientX-r.left)/r.width-.5;
+   const y=(e.clientY-r.top)/r.height-.5;
+   card.style.transform=
+   `scale(1.1) rotateY(${x*8}deg) rotateX(${y*-8}deg)`;
+  };
+  card.onmouseleave=()=>card.style.transform="";
+ });
+}
+
+function reveal(){
+ const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+   if(e.isIntersecting)e.target.classList.add("show");
   });
-
-  animateCards();
+ });
+ document.querySelectorAll(".card").forEach(c=>obs.observe(c));
 }
 
-/* =====================================================
-   SCROLL REVEAL
-===================================================== */
-function animateCards(){
-  const cards=document.querySelectorAll(".card");
-  const obs=new IntersectionObserver(entries=>{
-    entries.forEach(e=>{
-      if(e.isIntersecting){
-        e.target.classList.add("show");
-      }
-    });
-  },{threshold:.1});
+search.oninput=render;
+cat.onchange=render;
 
-  cards.forEach(c=>obs.observe(c));
-}
+/* theme */
+document.getElementById("theme").onclick=()=>{
+ document.body.classList.toggle("dark");
+ localStorage.setItem("theme",
+ document.body.classList.contains("dark")?"dark":"light");
+};
+if(localStorage.getItem("theme")==="dark")
+ document.body.classList.add("dark");
 
-/* =====================================================
-   EVENTS
-===================================================== */
-document.getElementById("search").addEventListener("input",render);
-categorySelect.addEventListener("change",render);
+/* keyboard */
+document.addEventListener("keydown",e=>{
+ if(e.key==="/"){e.preventDefault();search.focus();}
+ if(e.ctrlKey && e.key.toLowerCase()==="k"){
+  e.preventDefault();
+  document.getElementById("cmd").style.display="block";
+  document.getElementById("cmdInput").focus();
+ }
+});
 
-/* =====================================================
-   THEME TOGGLE
-===================================================== */
-const btn=document.getElementById("themeBtn");
-btn.onclick=()=>{
-  document.body.classList.toggle("dark");
-  localStorage.setItem("theme",
-    document.body.classList.contains("dark")?"dark":"light");
+document.getElementById("cmdInput").onkeydown=e=>{
+ if(e.key==="Escape") document.getElementById("cmd").style.display="none";
 };
 
-if(localStorage.getItem("theme")==="dark"){
-  document.body.classList.add("dark");
-}
-
-/* INIT */
 render();
-</script>
 
+</script>
 </body>
 </html>
